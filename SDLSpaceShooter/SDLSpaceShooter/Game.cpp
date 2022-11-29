@@ -1,7 +1,8 @@
 #include "Game.h"
 #include "TextureManager.h"
+#include "Timer.h"
 
-SDL_Texture* SpaceShipTex;
+SDL_Texture* spaceShipTex;
 SDL_Rect srcR, destR;
 
 Game::Game()
@@ -39,7 +40,7 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 		cout << "ERROR SDL DID NOT RUN";
 	}
 
-	SpaceShipTex = TextureManager::LoadTexture("Assets/StarShip.png", gRenderer);
+	spaceShipTex = TextureManager::LoadTexture("Assets/SpaceShip.png", gRenderer);
 }
 
 void Game::HandelEvents()
@@ -66,13 +67,13 @@ void Game::update()
 	destR.w = 64;
 
 	destR.x = frameCounter;
-	cout << frameCounter << endl;
+	//cout << frameCounter << endl;
 }
 
 void Game::render()
 {
 	SDL_RenderClear(gRenderer);
-	SDL_RenderCopy(gRenderer, SpaceShipTex, NULL, NULL);
+	SDL_RenderCopy(gRenderer, spaceShipTex, NULL, &destR);
 	SDL_RenderPresent(gRenderer);
 }
 
