@@ -1,9 +1,16 @@
 #include "Game.h"
 #include "TextureManager.h"
 #include "Timer.h"
+#include "GameObject.h"
+#include "ECS.h"
+#include "Components.h"
 
-SDL_Texture* spaceShipTex;
-SDL_Rect srcR, destR;
+GameObject* player;
+GameObject* meteor;
+
+Entity::Manager manager;
+auto& newPlayer(manager.addEntity());
+
 
 Game::Game()
 {}
@@ -40,7 +47,11 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 		cout << "ERROR SDL DID NOT RUN";
 	}
 
-	spaceShipTex = TextureManager::LoadTexture("Assets/SpaceShip.png", gRenderer);
+	player = new GameObject("Assets/SpaceShip.png", gRenderer, 0, 0);
+	meteor = new GameObject("Assets/Meteor.png", gRenderer, 200, 200);
+
+	newPlayer.addComponent<PositionComponent>();
+	newPlayer.getComponent<PositionComponent>().setPosition(200, 200);
 }
 
 void Game::HandelEvents()
@@ -60,24 +71,27 @@ void Game::HandelEvents()
 
 }
 
-void Game::update()
+void Game::Update()
 {
-	frameCounter++;
-	destR.h = 64;
-	destR.w = 64;
-
-	destR.x = frameCounter;
-	//cout << frameCounter << endl;
+	player->Update();
+	meteor->Update();
+	manager.update();
+	
+	std::cout << newPlayer.getComponent<PositionComponent>().x() << "," 
+		<< newPlayer.getComponent<PositionComponent>().y() << endl;
 }
 
-void Game::render()
+void Game::Render()
 {
 	SDL_RenderClear(gRenderer);
-	SDL_RenderCopy(gRenderer, spaceShipTex, NULL, &destR);
+
+	player->Render();
+	meteor->Render();
+
 	SDL_RenderPresent(gRenderer);
 }
 
-void Game::clean()
+void Game::Clean()
 {
 	SDL_DestroyWindow(gWindow);
 	SDL_DestroyRenderer(gRenderer);

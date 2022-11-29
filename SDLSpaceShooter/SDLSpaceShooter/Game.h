@@ -14,11 +14,11 @@ public:
 	void init(const char* title, int xPos, int yPos, int width, int height, bool fullScreen);
 
 	void HandelEvents();
-	void update();
-	void render();
-	void clean();
+	void Update();
+	void Render();
+	void Clean();
 
-	bool running() { return isRunning; };
+	bool Running() { return isRunning; };
 
 
 private:

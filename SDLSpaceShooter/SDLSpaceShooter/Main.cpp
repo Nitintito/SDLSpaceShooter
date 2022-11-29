@@ -15,14 +15,14 @@ int main(int argc, char* args[])
 
 	game->init("GameName", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
 
-	while (game->running())
+	while (game->Running())
 	{
 
 		frameStart = SDL_GetTicks();
 
 		game->HandelEvents();
-		game->update();
-		game->render();
+		game->Update();
+		game->Render();
 
 		frameTime = SDL_GetTicks() - frameStart;
 
@@ -32,7 +32,7 @@ int main(int argc, char* args[])
 		}
 	}
 
-	game->clean();
+	game->Clean();
 
 	return 0;
 }
