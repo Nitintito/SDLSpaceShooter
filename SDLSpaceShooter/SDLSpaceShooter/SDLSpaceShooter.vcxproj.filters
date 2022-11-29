@@ -5,6 +5,12 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="Source Files\Assets">
+      <UniqueIdentifier>{1574d111-cd58-4197-903d-6264ceda8eec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ECA">
+      <UniqueIdentifier>{dd1f1ba6-5774-4d3c-856f-41a8cd5bcb72}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -37,10 +43,18 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="ECS.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\ECA</Filter>
     </ClInclude>
     <ClInclude Include="Components.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\ECA</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Meteor.png">
+      <Filter>Source Files\Assets</Filter>
+    </Image>
+    <Image Include="Assets\SpaceShip.png">
+      <Filter>Source Files\Assets</Filter>
+    </Image>
   </ItemGroup>
 </Project>
