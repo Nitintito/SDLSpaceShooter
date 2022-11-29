@@ -1,4 +1,7 @@
-#include <SDL.h>
+#pragma once
+
+#include "SDL.h"
+#include "SDL_image.h"
 #include <iostream>
 using namespace std;
 
@@ -8,7 +11,7 @@ public:
 	Game();
 	~Game();
 
-	void init(const char* title, float xPos, float yPos, int width, int height, bool fullScreen);
+	void init(const char* title, int xPos, int yPos, int width, int height, bool fullScreen);
 
 	void HandelEvents();
 	void update();
