@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "TextureManager.h"
 #include "Components.h"
+#include "Vector2.h"
 
 Manager manager;
 auto& player(manager.addEntity());
@@ -42,7 +43,7 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 		cout << "ERROR SDL DID NOT RUN";
 	}
 
-	player.addComponent<PositionComponent>();
+	player.addComponent<TransformComponent>();
 	player.addComponent<SpriteComponent>("Assets/SpaceShip.png");
 
 
@@ -69,9 +70,10 @@ void Game::Update()
 {
 	//manager.refresh();
 	manager.update();
-
-	if (player.getComponent<PositionComponent>().x() > 100)
+	player.getComponent<TransformComponent>().position.Add(Vector2(1, 0));
+	if (player.getComponent<TransformComponent>().position.x > 100)
 	{
+		player.getComponent<TransformComponent>().position.Add(Vector2(5, 0));
 		player.getComponent<SpriteComponent>().setTexture("Assets/Meteor.png");
 	}
 }

@@ -1,5 +1,5 @@
 #pragma once
 
 #include "ECS.h"
-#include "PositionComponen.h"
+#include "TransformComponent.h"
 #include "SpriteComponent.h"
