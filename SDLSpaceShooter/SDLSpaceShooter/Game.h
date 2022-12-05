@@ -20,12 +20,13 @@ public:
 
 	bool Running() { return isRunning; };
 
+	static SDL_Renderer *gRenderer;
+
 
 private:
 
 	bool isRunning = false;
 	SDL_Window *gWindow;
-	SDL_Renderer* gRenderer;
 
 	int frameCounter = 0;
 };

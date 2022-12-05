@@ -8,7 +8,7 @@
     <Filter Include="Source Files\Assets">
       <UniqueIdentifier>{1574d111-cd58-4197-903d-6264ceda8eec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\ECA">
+    <Filter Include="Source Files\ECS">
       <UniqueIdentifier>{dd1f1ba6-5774-4d3c-856f-41a8cd5bcb72}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -43,10 +43,16 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="ECS.h">
-      <Filter>Source Files\ECA</Filter>
+      <Filter>Source Files\ECS</Filter>
     </ClInclude>
     <ClInclude Include="Components.h">
-      <Filter>Source Files\ECA</Filter>
+      <Filter>Source Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteComponent.h">
+      <Filter>Source Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="PositionComponen.h">
+      <Filter>Source Files\ECS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

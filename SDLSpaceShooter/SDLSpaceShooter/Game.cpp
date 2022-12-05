@@ -1,16 +1,11 @@
 #include "Game.h"
 #include "TextureManager.h"
-#include "Timer.h"
-#include "GameObject.h"
-#include "ECS.h"
 #include "Components.h"
 
-GameObject* player;
-GameObject* meteor;
+Manager manager;
+auto& player(manager.addEntity());
 
-Entity::Manager manager;
-auto& newPlayer(manager.addEntity());
-
+SDL_Renderer* Game::gRenderer = nullptr;
 
 Game::Game()
 {}
@@ -47,11 +42,10 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 		cout << "ERROR SDL DID NOT RUN";
 	}
 
-	player = new GameObject("Assets/SpaceShip.png", gRenderer, 0, 0);
-	meteor = new GameObject("Assets/Meteor.png", gRenderer, 200, 200);
+	player.addComponent<PositionComponent>();
+	player.addComponent<SpriteComponent>("Assets/SpaceShip.png");
 
-	newPlayer.addComponent<PositionComponent>();
-	newPlayer.getComponent<PositionComponent>().setPosition(200, 200);
+
 }
 
 void Game::HandelEvents()
@@ -73,20 +67,20 @@ void Game::HandelEvents()
 
 void Game::Update()
 {
-	player->Update();
-	meteor->Update();
+	//manager.refresh();
 	manager.update();
-	
-	std::cout << newPlayer.getComponent<PositionComponent>().x() << "," 
-		<< newPlayer.getComponent<PositionComponent>().y() << endl;
+
+	if (player.getComponent<PositionComponent>().x() > 100)
+	{
+		player.getComponent<SpriteComponent>().setTexture("Assets/Meteor.png");
+	}
 }
 
 void Game::Render()
 {
 	SDL_RenderClear(gRenderer);
 
-	player->Render();
-	meteor->Render();
+	manager.draw();
 
 	SDL_RenderPresent(gRenderer);
 }
