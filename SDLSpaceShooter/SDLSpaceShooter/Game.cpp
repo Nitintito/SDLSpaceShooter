@@ -4,9 +4,11 @@
 #include "Vector2.h"
 
 Manager manager;
-auto& player(manager.addEntity());
 
 SDL_Renderer* Game::gRenderer = nullptr;
+SDL_Event Game::gEvent;
+
+auto& player(manager.addEntity());
 
 Game::Game()
 {}
@@ -45,16 +47,16 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 
 	player.addComponent<TransformComponent>();
 	player.addComponent<SpriteComponent>("Assets/SpaceShip.png");
+	player.addComponent<KeyboardController>();
 
 
 }
 
 void Game::HandelEvents()
 {
-	SDL_Event event;
-	SDL_PollEvent(&event);
+	SDL_PollEvent(&gEvent);
 
-	switch (event.type)
+	switch (gEvent.type)
 	{
 	case SDL_QUIT:
 		isRunning = false;
@@ -70,10 +72,8 @@ void Game::Update()
 {
 	//manager.refresh();
 	manager.update();
-	player.getComponent<TransformComponent>().position.Add(Vector2(1, 0));
 	if (player.getComponent<TransformComponent>().position.x > 100)
 	{
-		player.getComponent<TransformComponent>().position.Add(Vector2(5, 0));
 		player.getComponent<SpriteComponent>().setTexture("Assets/Meteor.png");
 	}
 }

@@ -21,7 +21,7 @@ public:
 	bool Running() { return isRunning; };
 
 	static SDL_Renderer *gRenderer;
-
+	static SDL_Event gEvent;
 
 private:
 

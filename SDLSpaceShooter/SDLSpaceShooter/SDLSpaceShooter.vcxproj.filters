@@ -60,6 +60,9 @@
     <ClInclude Include="Vector2.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="KeyboardController.h">
+      <Filter>Source Files\ECS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Meteor.png">
