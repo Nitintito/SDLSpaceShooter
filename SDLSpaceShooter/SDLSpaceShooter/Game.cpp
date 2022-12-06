@@ -2,6 +2,7 @@
 #include "TextureManager.h"
 #include "Components.h"
 #include "Vector2.h"
+#include "Collision.h"
 
 Manager manager;
 
@@ -9,6 +10,8 @@ SDL_Renderer* Game::gRenderer = nullptr;
 SDL_Event Game::gEvent;
 
 auto& player(manager.addEntity());
+auto& wall(manager.addEntity());
+
 
 Game::Game()
 {}
@@ -45,9 +48,14 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 		cout << "ERROR SDL DID NOT RUN";
 	}
 
-	player.addComponent<TransformComponent>();
+	player.addComponent<TransformComponent>(2);
 	player.addComponent<SpriteComponent>("Assets/SpaceShip.png");
 	player.addComponent<KeyboardController>();
+	player.addComponent<ColliderComponent>("Player");
+
+	wall.addComponent<TransformComponent>(300.0f, 300.0f, 300, 20, 1);
+	wall.addComponent<SpriteComponent>("Assets/Meteor.png");
+	wall.addComponent<ColliderComponent>("Wall");
 
 
 }
@@ -72,9 +80,11 @@ void Game::Update()
 {
 	//manager.refresh();
 	manager.update();
-	if (player.getComponent<TransformComponent>().position.x > 100)
+
+	if (Collision::AABB(player.getComponent<ColliderComponent>().collider,
+		wall.getComponent<ColliderComponent>().collider))
 	{
-		player.getComponent<SpriteComponent>().setTexture("Assets/Meteor.png");
+		std::cout << "Wall hit!" << std::endl;
 	}
 }
 
