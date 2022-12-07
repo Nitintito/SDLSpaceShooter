@@ -34,6 +34,9 @@
     <ClCompile Include="Collision.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AssetManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -72,7 +75,10 @@
     <ClInclude Include="Collision.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="ShootComponent.h">
+    <ClInclude Include="AssetManager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectileComponent.h">
       <Filter>Source Files\ECS</Filter>
     </ClInclude>
   </ItemGroup>

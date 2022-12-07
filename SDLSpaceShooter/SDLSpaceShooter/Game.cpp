@@ -3,8 +3,10 @@
 #include "Components.h"
 #include "Vector2.h"
 #include "Collision.h"
+#include "AssetManager.h"
 
 Manager manager;
+AssetManager* Game::assetManager = new AssetManager(&manager);
 
 SDL_Renderer* Game::gRenderer = nullptr;
 SDL_Event Game::gEvent;
@@ -14,7 +16,6 @@ auto& projectile(manager.addEntity());
 auto& wall(manager.addEntity());
 
 std::vector<ColliderComponent*> Game::colliders;
-
 
 Game::Game()
 {}
@@ -51,18 +52,23 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 		cout << "ERROR SDL DID NOT RUN";
 	}
 
+	assetManager->AddTexture("Player", "Assets/SpaceShip.png");
+	assetManager->AddTexture("Projectile", "Assets/Projectile.png");
+	assetManager->AddTexture("Meteor", "Assets/Meteor.png");
+
+
+
 	player.addComponent<TransformComponent>(400, 530, 2);
-	player.addComponent<SpriteComponent>("Assets/SpaceShip.png");
+	player.addComponent<SpriteComponent>("Player");
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("Player");
 
-	projectile.addComponent<TransformComponent>(400, 400, 0.3f).velocity = Vector2(0, -2);
-	projectile.addComponent<SpriteComponent>("Assets/Projectile.png");
-	projectile.addComponent<ColliderComponent>("Projectile");
+	
+	wall.addComponent<TransformComponent>(400, 400, 2.0f);
+	wall.addComponent<SpriteComponent>("Meteor");
+	wall.addComponent<ColliderComponent>("Meteor");
 
-	wall.addComponent<TransformComponent>(300.0f, 300.0f, 300, 20, 1);
-	wall.addComponent<SpriteComponent>("Assets/Meteor.png");
-	wall.addComponent<ColliderComponent>("Wall");
+	//assetManager->CreateProjectile(Vector2(700, 700), 200, 2, "Projectile");
 }
 
 void Game::HandelEvents()

@@ -6,6 +6,7 @@
 #include <vector>
 using namespace std;
 
+class AssetManager;
 class ColliderComponent;
 
 class Game
@@ -26,6 +27,7 @@ public:
 	static SDL_Renderer *gRenderer;
 	static SDL_Event gEvent;
 	static vector<ColliderComponent*> colliders;
+	static AssetManager* assetManager;
 
 private:
 

@@ -3,6 +3,7 @@
 #include "Components.h"
 #include "SDL.h"
 #include "TextureManager.h"
+#include "AssetManager.h"
 
 class SpriteComponent : public Component
 {
@@ -14,9 +15,9 @@ private:
 public:
 
 	SpriteComponent() = default;
-	SpriteComponent(const char* path)
+	SpriteComponent(std::string id)
 	{
-		setTexture(path);
+		setTexture(id);
 	}
 
 	~SpriteComponent()
@@ -24,9 +25,9 @@ public:
 		SDL_DestroyTexture(texture);
 	}
 
-	void setTexture(const char* path)
+	void setTexture(std::string id)
 	{
-		texture = TextureManager::LoadTexture(path);
+		texture = Game::assetManager->GetTexture(id);
 	}
 
 	void init() override
