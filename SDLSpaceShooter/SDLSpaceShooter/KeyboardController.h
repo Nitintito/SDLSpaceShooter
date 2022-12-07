@@ -6,6 +6,8 @@
 
 class KeyboardController : public Component
 {
+private:
+
 public:
 	TransformComponent* transform;
 
@@ -31,6 +33,8 @@ public:
 				break;
 			case SDLK_d:
 				transform->velocity.x= 1;
+				break;
+			case SDLK_SPACE:
 				break;
 			default:
 				break;

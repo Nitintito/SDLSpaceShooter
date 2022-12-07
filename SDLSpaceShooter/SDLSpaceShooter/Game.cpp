@@ -10,7 +10,9 @@ SDL_Renderer* Game::gRenderer = nullptr;
 SDL_Event Game::gEvent;
 
 auto& player(manager.addEntity());
+auto& projectile(manager.addEntity());
 auto& wall(manager.addEntity());
+
 
 
 Game::Game()
@@ -38,7 +40,7 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 		if (gRenderer != NULL)
 		{
 			cout << "Renderer Created" << endl;
-			SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
+			SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
 		}
 		isRunning = true;
 	}
@@ -48,16 +50,18 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 		cout << "ERROR SDL DID NOT RUN";
 	}
 
-	player.addComponent<TransformComponent>(2);
+	player.addComponent<TransformComponent>(400, 530, 2);
 	player.addComponent<SpriteComponent>("Assets/SpaceShip.png");
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("Player");
 
+	projectile.addComponent<TransformComponent>(400, 400, 0.3f).velocity = Vector2(0, -2);
+	projectile.addComponent<SpriteComponent>("Assets/Projectile.png");
+	projectile.addComponent<ColliderComponent>("Projectile");
+
 	wall.addComponent<TransformComponent>(300.0f, 300.0f, 300, 20, 1);
 	wall.addComponent<SpriteComponent>("Assets/Meteor.png");
 	wall.addComponent<ColliderComponent>("Wall");
-
-
 }
 
 void Game::HandelEvents()
@@ -85,6 +89,7 @@ void Game::Update()
 		wall.getComponent<ColliderComponent>().collider))
 	{
 		player.getComponent<TransformComponent>().velocity * -1;
+		//player.destroy();
 
 		std::cout << "Wall hit!" << std::endl;
 	}

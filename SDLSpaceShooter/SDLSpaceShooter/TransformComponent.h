@@ -10,7 +10,7 @@ struct TransformComponent : public Component
 	
 	int height = 32;
 	int width = 32;
-	int scale = 1;
+	float scale = 1;
 
 	int speed = 3;
 
@@ -19,7 +19,7 @@ struct TransformComponent : public Component
 		position.Zero();
 	}
 
-	TransformComponent(int sc)
+	TransformComponent(float sc)
 	{
 		position.Zero();
 		scale = sc;
@@ -29,6 +29,13 @@ struct TransformComponent : public Component
 	{
 		position.x = x;
 		position.y = y;
+	}
+
+	TransformComponent(int x, int y, float sc)
+	{
+		position.x = x;
+		position.y = y;
+		scale = sc;
 	}
 
 	TransformComponent(float x, float y, int h, int w, int sc)

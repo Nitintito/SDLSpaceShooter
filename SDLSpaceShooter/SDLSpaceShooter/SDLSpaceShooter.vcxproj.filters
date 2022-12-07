@@ -72,6 +72,9 @@
     <ClInclude Include="Collision.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="ShootComponent.h">
+      <Filter>Source Files\ECS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Meteor.png">
