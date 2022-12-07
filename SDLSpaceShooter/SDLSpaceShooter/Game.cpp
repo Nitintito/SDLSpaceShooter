@@ -13,6 +13,7 @@ auto& player(manager.addEntity());
 auto& projectile(manager.addEntity());
 auto& wall(manager.addEntity());
 
+std::vector<ColliderComponent*> Game::colliders;
 
 
 Game::Game()
@@ -82,16 +83,14 @@ void Game::HandelEvents()
 
 void Game::Update()
 {
-	//manager.refresh();
 	manager.update();
-
-	if (Collision::AABB(player.getComponent<ColliderComponent>().collider,
-		wall.getComponent<ColliderComponent>().collider))
+	for (auto collider : colliders)
 	{
-		player.getComponent<TransformComponent>().velocity * -1;
-		//player.destroy();
-
-		std::cout << "Wall hit!" << std::endl;
+		Collision::AABB(player.getComponent<ColliderComponent>(), *collider);
+		//{
+			//player.getComponent<TransformComponent>().velocity * -1;
+			//std::cout << "Wall hit!" << std::endl;
+		//}
 	}
 }
 
