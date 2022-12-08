@@ -29,6 +29,14 @@ public:
 	static vector<ColliderComponent*> colliders;
 	static AssetManager* assetManager;
 
+	enum  groupLabls : std::size_t
+	{
+		groupPlayers,
+		groupMeteors,
+		groupProjectiles,
+		groupColliders
+	};
+
 private:
 
 	bool isRunning = false;

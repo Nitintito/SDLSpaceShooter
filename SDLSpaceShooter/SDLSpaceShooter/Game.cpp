@@ -13,7 +13,11 @@ SDL_Event Game::gEvent;
 
 auto& player(manager.addEntity());
 auto& projectile(manager.addEntity());
-auto& wall(manager.addEntity());
+auto& meteor(manager.addEntity());
+
+auto& players(manager.getGeroup(Game::groupPlayers));
+auto& meteors(manager.getGeroup(Game::groupMeteors));
+auto& projectiles(manager.getGeroup(Game::groupProjectiles));
 
 std::vector<ColliderComponent*> Game::colliders;
 
@@ -53,8 +57,8 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 	}
 
 	assetManager->AddTexture("Player", "Assets/SpaceShip.png");
-	assetManager->AddTexture("Projectile", "Assets/Projectile.png");
 	assetManager->AddTexture("Meteor", "Assets/Meteor.png");
+	assetManager->AddTexture("Projectile", "Assets/Projectile.png");
 
 
 
@@ -62,13 +66,14 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 	player.addComponent<SpriteComponent>("Player");
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("Player");
-
+	player.addGroup(groupPlayers);
 	
-	wall.addComponent<TransformComponent>(400, 400, 2.0f);
-	wall.addComponent<SpriteComponent>("Meteor");
-	wall.addComponent<ColliderComponent>("Meteor");
+	meteor.addComponent<TransformComponent>(400, 400, 2.0f);
+	meteor.addComponent<SpriteComponent>("Meteor");
+	meteor.addComponent<ColliderComponent>("Meteor");
+	meteor.addGroup(groupMeteors);
 
-	//assetManager->CreateProjectile(Vector2(700, 700), 200, 2, "Projectile");
+	assetManager->CreateProjectile(Vector2(100, 100), 1000, Vector2(2, 0), 1, "Projectile");
 }
 
 void Game::HandelEvents()
@@ -89,14 +94,25 @@ void Game::HandelEvents()
 
 void Game::Update()
 {
+	//manager.refresh();
 	manager.update();
-	for (auto collider : colliders)
+	for (auto m : meteors)
 	{
-		Collision::AABB(player.getComponent<ColliderComponent>(), *collider);
-		//{
+		if (Collision::AABB(player.getComponent<ColliderComponent>().collider, m->getComponent<ColliderComponent>().collider))
+		{
 			//player.getComponent<TransformComponent>().velocity * -1;
-			//std::cout << "Wall hit!" << std::endl;
-		//}
+			std::cout << "Meteor hit!" << std::endl;
+
+		}
+	}
+
+	for (auto& p : projectiles)
+	{
+		if (Collision::AABB(player.getComponent<ColliderComponent>().collider, p->getComponent<ColliderComponent>().collider))
+		{
+			std::cout << "Projectile hit!" << std::endl;
+			p->destroy();
+		}
 	}
 }
 
@@ -104,7 +120,19 @@ void Game::Render()
 {
 	SDL_RenderClear(gRenderer);
 
-	manager.draw();
+	for (auto& p : players)
+	{
+		p->draw();
+	}
+	for (auto& m : meteors)
+	{
+		m->draw();
+	}
+	for (auto& p : projectiles)
+	{
+		p->draw();
+	}
+
 
 	SDL_RenderPresent(gRenderer);
 }
