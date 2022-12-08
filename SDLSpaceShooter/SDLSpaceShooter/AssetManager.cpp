@@ -21,8 +21,21 @@ void AssetManager::CreateProjectile(Vector2 pos, Vector2 velocity, int range, in
 void AssetManager::CreateMeteor(Vector2 pos, Vector2 velocity, int speed, float scale, std::string id)
 {
 	auto& meteor(manager->addEntity());
-	meteor.addComponent<TransformComponent>(pos.x, pos.y, scale).velocity = velocity * speed;
+	meteor.addComponent<TransformComponent>(pos.x, pos.y);
 	meteor.addComponent<SpriteComponent>("Meteor");
+	meteor.addComponent<MeteorComponent>(scale, speed, velocity);
+	meteor.addComponent<ColliderComponent>("Meteor");
+	meteor.addGroup(Game::groupMeteors);
+
+	std::cout << "Spwaning Meteor" << endl;
+}
+
+void AssetManager::CreateRandomMeteor(Vector2 pos, std::string id)
+{
+	auto& meteor(manager->addEntity());
+	meteor.addComponent<TransformComponent>(pos.x, pos.y);
+	meteor.addComponent<SpriteComponent>("Meteor");
+	meteor.addComponent<MeteorComponent>(true);
 	meteor.addComponent<ColliderComponent>("Meteor");
 	meteor.addGroup(Game::groupMeteors);
 

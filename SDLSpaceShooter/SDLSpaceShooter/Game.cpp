@@ -33,6 +33,8 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 	if (fullScreen)
 		flags = SDL_WINDOW_FULLSCREEN;
 
+	srand((unsigned)time(NULL));
+
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
 		cout << "SDL Initialised!" << endl;
@@ -66,11 +68,6 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 	player.addComponent<ColliderComponent>("Player");
 	player.addGroup(groupPlayers);
 	
-	
-	assetManager->CreateMeteor(Vector2(200, 200), Vector2(0.5, 0.8), 1, 1, "Meteor");
-	assetManager->CreateMeteor(Vector2(400, 400), Vector2(0.8, 0.1), 1, 0.5, "Meteor");
-	assetManager->CreateMeteor(Vector2(100, 100), Vector2(0.5, 1), 1, 2, "Meteor");
-
 	assetManager->CreateProjectile(Vector2(400, 400), Vector2(1, 0), 30, 5, "Projectile");
 }
 
@@ -87,11 +84,12 @@ void Game::HandelEvents()
 	default:
 		break;
 	}
-
 }
 
 void Game::Update()
 {
+	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
+
 	//manager.refresh();
 	manager.update();
 	for (auto m : meteors)
