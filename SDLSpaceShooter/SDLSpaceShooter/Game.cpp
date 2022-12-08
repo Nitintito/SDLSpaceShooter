@@ -68,7 +68,24 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 	player.addComponent<ColliderComponent>("Player");
 	player.addGroup(groupPlayers);
 	
-	assetManager->CreateProjectile(Vector2(400, 400), Vector2(1, 0), 30, 5, "Projectile");
+	assetManager->CreateProjectile(Vector2(400, 400), Vector2(1, 0), 800, 0, "Projectile");
+	assetManager->CreateProjectile(Vector2(400, 400), Vector2(1, 0), 800, 1, "Projectile");
+
+	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
+	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
+	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
+	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
+	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
+	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
+	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
+	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
+	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
+	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
+	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
+	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
+
+
+
 }
 
 void Game::HandelEvents()
@@ -88,17 +105,17 @@ void Game::HandelEvents()
 
 void Game::Update()
 {
-	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
-
-	//manager.refresh();
+	manager.refresh();
 	manager.update();
-	for (auto m : meteors)
+
+	for (auto& m : meteors)
 	{
 		//m->update();
 		if (Collision::AABB(player.getComponent<ColliderComponent>().collider, m->getComponent<ColliderComponent>().collider))
 		{
 			//player.getComponent<TransformComponent>().velocity * -1;
 			std::cout << "Meteor hit!" << std::endl;
+			m->deleteGroup(groupMeteors);
 			//m->destroy();
 		}
 	}
@@ -108,6 +125,7 @@ void Game::Update()
 		if (Collision::AABB(player.getComponent<ColliderComponent>().collider, p->getComponent<ColliderComponent>().collider))
 		{
 			std::cout << "Projectile hit!" << std::endl;
+			p->deleteGroup(groupProjectiles);
 			//p->destroy();
 		}
 	}

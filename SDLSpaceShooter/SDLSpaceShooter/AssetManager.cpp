@@ -26,8 +26,6 @@ void AssetManager::CreateMeteor(Vector2 pos, Vector2 velocity, int speed, float 
 	meteor.addComponent<MeteorComponent>(scale, speed, velocity);
 	meteor.addComponent<ColliderComponent>("Meteor");
 	meteor.addGroup(Game::groupMeteors);
-
-	std::cout << "Spwaning Meteor" << endl;
 }
 
 void AssetManager::CreateRandomMeteor(Vector2 pos, std::string id)

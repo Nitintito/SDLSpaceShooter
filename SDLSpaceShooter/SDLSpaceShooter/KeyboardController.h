@@ -5,11 +5,9 @@
 #include "Components.h"
 #include "AssetManager.h"
 
-class KeyboardController : public Component
-{
-private:
 
-public:
+struct KeyboardController : public Component
+{
 	TransformComponent* transform;
 
 	void init() override
@@ -37,12 +35,13 @@ public:
 				break;
 			case SDLK_SPACE:
 				std::cout << "request shoot" << endl;
-				Game::assetManager->CreateProjectile(Vector2(400, 400), Vector2(1, 0), 30, 5, "Projectile");
+				Game::assetManager->CreateProjectile(Vector2(400, 400), Vector2(0, -1), 800, 5, "Projectile");
 				break;
 			default:
 				break;
 			}
 		}
+		//Game::assetManager->CreateProjectile(Vector2(400, 400), Vector2(0, -1), 800, 5, "Projectile");
 
 		if (Game::gEvent.type == SDL_KEYUP)
 		{

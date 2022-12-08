@@ -131,20 +131,19 @@ public:
 
 	void refresh()
 	{
-		for (auto i(0u); i = maxGroups; i++)
+		for (auto i(0u); i < maxGroups; i++)
 		{
-			auto& vector(groupEntities[i]);
-			vector.erase(std::remove_if(std::begin(vector), std::end(vector), [i](Entity* entity)
-				{
-					return !entity->isActive() || !entity->hasGroup(i);
-				}),
-				std::end(vector));
+			auto& v(groupEntities[i]);
+			v.erase( std::remove_if(std::begin(v), std::end(v), [i](Entity* mEntity)
+			{
+				return !mEntity->isActive() || !mEntity->hasGroup(i);
+			}),
+				std::end(v));
 		}
 
-		entities.erase(std::remove_if(std::begin(entities), std::end(entities),
-		[](const std::unique_ptr<Entity>& entity)
+		entities.erase(std::remove_if(std::begin(entities), std::end(entities), [](const std::unique_ptr<Entity> &mEntity)
 		{
-			return !entity->isActive();
+			return !mEntity->isActive();
 		}),
 			std::end(entities));
 	}
