@@ -51,7 +51,7 @@ class Entity
 {
 private:
 	Manager& manager;
-	bool active;
+	bool active = true;
 	std::vector<std::unique_ptr<Component>> components;
 
 	ComponentArray componentArray;
@@ -72,6 +72,7 @@ public:
 
 	bool isActive() const { return active; }
 	void destroy() { active = false; }
+
 	bool hasGroup(Group group)
 	{
 		return groupBitset[group];
@@ -135,15 +136,15 @@ public:
 			auto& vector(groupEntities[i]);
 			vector.erase(std::remove_if(std::begin(vector), std::end(vector), [i](Entity* entity)
 				{
-					return entity->isActive() || !entity->hasGroup(i);
+					return !entity->isActive() || !entity->hasGroup(i);
 				}),
 				std::end(vector));
 		}
 
 		entities.erase(std::remove_if(std::begin(entities), std::end(entities),
-		[](const std::unique_ptr<Entity>& mEntity)
+		[](const std::unique_ptr<Entity>& entity)
 		{
-			return !mEntity->isActive();
+			return !entity->isActive();
 		}),
 			std::end(entities));
 	}

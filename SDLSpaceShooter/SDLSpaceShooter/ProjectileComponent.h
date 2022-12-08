@@ -15,17 +15,18 @@ public:
 
 	void init() override
 	{
-		transfom = &entity->getComponent<TransformComponent>();
-		transfom->velocity = velocity;
-		std::cout << transfom->position << std::endl;
+		transform = &entity->getComponent<TransformComponent>();
+		transform->velocity = velocity;
+		transform->speed = speed;
 	}
 
 	void update() override
 	{
-		distance += speed;
+		distance += travleDistance;
 
 		if (distance > range)
 		{
+			std::cout << "out of range" << std::endl;
 			entity->destroy();
 		}
 		//TODO Else if out of bounds
@@ -33,10 +34,11 @@ public:
 
 private:
 
-	TransformComponent* transfom;
+	TransformComponent* transform;
 
-	int range = 0;
-	int speed = 0;
-	int distance = 0;
 	Vector2 velocity;
+	int range = 0;
+	int distance = 0;
+	int speed = 0;
+	int travleDistance = (velocity.x + velocity.y) * speed;
 };

@@ -60,20 +60,18 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 	assetManager->AddTexture("Meteor", "Assets/Meteor.png");
 	assetManager->AddTexture("Projectile", "Assets/Projectile.png");
 
-
-
 	player.addComponent<TransformComponent>(400, 530, 2);
 	player.addComponent<SpriteComponent>("Player");
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("Player");
 	player.addGroup(groupPlayers);
 	
-	meteor.addComponent<TransformComponent>(400, 400, 2.0f);
-	meteor.addComponent<SpriteComponent>("Meteor");
-	meteor.addComponent<ColliderComponent>("Meteor");
-	meteor.addGroup(groupMeteors);
+	
+	assetManager->CreateMeteor(Vector2(200, 200), Vector2(0.5, 0.8), 1, 1, "Meteor");
+	assetManager->CreateMeteor(Vector2(400, 400), Vector2(0.8, 0.1), 1, 0.5, "Meteor");
+	assetManager->CreateMeteor(Vector2(100, 100), Vector2(0.5, 1), 1, 2, "Meteor");
 
-	assetManager->CreateProjectile(Vector2(100, 100), 1000, Vector2(2, 0), 1, "Projectile");
+	assetManager->CreateProjectile(Vector2(400, 400), Vector2(1, 0), 30, 5, "Projectile");
 }
 
 void Game::HandelEvents()
@@ -98,11 +96,12 @@ void Game::Update()
 	manager.update();
 	for (auto m : meteors)
 	{
+		//m->update();
 		if (Collision::AABB(player.getComponent<ColliderComponent>().collider, m->getComponent<ColliderComponent>().collider))
 		{
 			//player.getComponent<TransformComponent>().velocity * -1;
 			std::cout << "Meteor hit!" << std::endl;
-
+			//m->destroy();
 		}
 	}
 
@@ -111,7 +110,7 @@ void Game::Update()
 		if (Collision::AABB(player.getComponent<ColliderComponent>().collider, p->getComponent<ColliderComponent>().collider))
 		{
 			std::cout << "Projectile hit!" << std::endl;
-			p->destroy();
+			//p->destroy();
 		}
 	}
 }
@@ -132,7 +131,6 @@ void Game::Render()
 	{
 		p->draw();
 	}
-
 
 	SDL_RenderPresent(gRenderer);
 }

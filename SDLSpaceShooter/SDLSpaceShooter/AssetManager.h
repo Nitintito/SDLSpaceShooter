@@ -6,6 +6,7 @@
 #include "Vector2.h"
 #include "ECS.h"
 
+
 class AssetManager
 {
 public:
@@ -13,7 +14,8 @@ public:
 	~AssetManager();
 
 	//Gameobjects
-	void CreateProjectile(Vector2 pos, int range, Vector2 velocity, int speed, std::string id);
+	void CreateProjectile(Vector2 pos, Vector2 velocity, int range, int speed, std::string id);
+	void CreateMeteor(Vector2 pos, Vector2 velocity, int speed, float scale, std::string id);
 
 
 	//textures

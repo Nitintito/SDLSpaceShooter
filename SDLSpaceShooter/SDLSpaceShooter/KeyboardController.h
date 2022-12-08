@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "ECS.h"
 #include "Components.h"
+#include "AssetManager.h"
 
 class KeyboardController : public Component
 {
@@ -35,6 +36,8 @@ public:
 				transform->velocity.x= 1;
 				break;
 			case SDLK_SPACE:
+				std::cout << "request shoot" << endl;
+				Game::assetManager->CreateProjectile(Vector2(400, 400), Vector2(1, 0), 30, 5, "Projectile");
 				break;
 			default:
 				break;
