@@ -22,6 +22,11 @@ public:
 	void Render();
 	void Clean();
 
+	void spawnNewWave(int size);
+	int waveSize = 3;
+	int remaingingMeteors;
+	const int windowH = 800, windowL = 600;
+
 	
 	bool Running() { return isRunning; };
 

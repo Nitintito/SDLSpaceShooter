@@ -17,6 +17,7 @@ auto& players(manager.getGroup(Game::groupPlayers));
 auto& meteors(manager.getGroup(Game::groupMeteors));
 auto& projectiles(manager.getGroup(Game::groupProjectiles));
 
+
 std::vector<ColliderComponent*> Game::colliders;
 
 Game::Game()
@@ -68,21 +69,7 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 	player.addComponent<ColliderComponent>("Player");
 	player.addGroup(groupPlayers);
 
-	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
-	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
-	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
-	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
-	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
-	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
-	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
-	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
-	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
-	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
-	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
-	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
-
-
-
+	spawnNewWave(waveSize);
 }
 
 void Game::HandelEvents()
@@ -103,29 +90,38 @@ void Game::Update()
 {
 	manager.refresh();
 	manager.update();
+	cout << remaingingMeteors << endl;
+	//cout << manager.isGroupEmpty(groupMeteors);
+	if (remaingingMeteors <= 0)
+	{
+		//TODO Spwan more Meteors
+		spawnNewWave(waveSize);
+		cout << "New Wave";
+	}
+
+	//cout << manager.isGroupEmpty(groupMeteors) << endl;
 
 	for (auto& m : meteors)
 	{
-		//m->update();
 		if (Collision::AABB(player.getComponent<ColliderComponent>().collider, m->getComponent<ColliderComponent>().collider))
 		{
-			//player.getComponent<TransformComponent>().velocity * -1;
 			std::cout << "Meteor hit!" << std::endl;
+			//TODO take damage
 			m->deleteGroup(groupMeteors);
-			player.destroy();
-			//m->destroy();
+			remaingingMeteors--;
+		}
+		for (auto& p : projectiles)
+		{
+			if (Collision::AABB(m->getComponent<ColliderComponent>().collider, p->getComponent<ColliderComponent>().collider))
+			{
+				std::cout << "Projectile hit Meteor!" << std::endl;
+				m->deleteGroup(groupMeteors);
+				p->deleteGroup(groupProjectiles);
+				remaingingMeteors--;
+			}
 		}
 	}
 
-	for (auto& p : projectiles)
-	{
-		if (Collision::AABB(player.getComponent<ColliderComponent>().collider, p->getComponent<ColliderComponent>().collider))
-		{
-			std::cout << "Projectile hit!" << std::endl;
-			p->deleteGroup(groupProjectiles);
-			//p->destroy();
-		}
-	}
 }
 
 void Game::Render()
@@ -148,6 +144,17 @@ void Game::Render()
 	SDL_RenderPresent(gRenderer);
 }
 
+void Game::spawnNewWave(int size)
+{
+	remaingingMeteors = waveSize;
+	for (int i = 0; i < size; i++)
+	{
+		assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
+	}
+	waveSize++;
+}
+
+
 void Game::Clean()
 {
 	SDL_DestroyWindow(gWindow);
@@ -155,3 +162,5 @@ void Game::Clean()
 	SDL_Quit();
 	cout << "Game Cleaned" << endl;
 }
+
+

@@ -36,7 +36,7 @@ struct KeyboardController : public Component
 				break;
 			case SDLK_SPACE:
 				std::cout << "request shoot" << endl;
-				Game::assetManager->CreateProjectile(Vector2(400, 400), Vector2(0, -1), 800, 5, "Projectile");
+				Game::assetManager->CreateProjectile(Vector2(transform->getPosition().x + 30, transform->getPosition().y), Vector2(0, -1), 800, 5, "Projectile");
 				break;
 			default:
 				break;

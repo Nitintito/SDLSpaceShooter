@@ -26,13 +26,13 @@ struct TransformComponent : public Component
 		scale = sc;
 	}
 
-	TransformComponent(int x, int y)
+	TransformComponent(float x, float y)
 	{
 		position.x = x;
 		position.y = y;
 	}
 
-	TransformComponent(int x, int y, float sc)
+	TransformComponent(float x, float y, float sc)
 	{
 		position.x = x;
 		position.y = y;
@@ -51,6 +51,10 @@ struct TransformComponent : public Component
 	void init() override
 	{
 		velocity.Zero();
+	}
+	Vector2 getPosition()
+	{
+		return position;
 	}
 
 	void update() override

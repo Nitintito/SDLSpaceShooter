@@ -23,15 +23,15 @@ public:
 	{
 		if (random)
 		{
-			float rndVelocityX = RandomFoat(1, -1);
-			float rndVelocityY = RandomFoat(1, -1);
+			float rndVelocityY = RandomFloat(0.1, 1);
+			float rndVelocityX = RandomFloat(rndVelocityY/2, -rndVelocityY/2);
 			float rndScale = 1 + (rand() % 5);
 			int rndSpeed = 1 + (rand() % 5);
-			int rndPosX = (rand() % 800);
+			int rndPosX = (rand() % 700);
 			int rndPosY = (rand() % 600);
 
 			velocity = Vector2(rndVelocityX, rndVelocityY);
-			position = Vector2(rndPosX, rndPosY);
+			position = Vector2(rndPosX, -100);
 			scale = rndScale;
 			speed = rndSpeed;
 		}
@@ -44,7 +44,7 @@ public:
 
 	}
 
-	float RandomFoat(float Min, float Max)
+	float RandomFloat(float Min, float Max)
 	{
 		return ((float(rand()) / float(RAND_MAX)) * (Max - Min)) + Min;
 	}

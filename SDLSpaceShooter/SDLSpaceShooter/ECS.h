@@ -27,8 +27,8 @@ template <typename T> inline ComponentID getComponentTypeID() noexcept
 	return typeID;
 }
 
-constexpr std::size_t maxComponents = 16;
-constexpr std::size_t maxGroups = 16;
+constexpr std::size_t maxComponents = 64;
+constexpr std::size_t maxGroups = 64;
 
 using ComponentBitSet = std::bitset<maxComponents>;
 using GroupBitset = std::bitset<maxGroups>;
@@ -63,7 +63,17 @@ public:
 
 	void update()
 	{
-		for (auto& c : components) c->update();
+		auto& self = *this;
+		for (size_t i = 0; i < components.size(); i++)
+		{
+			auto& c = components[i];
+			if (c == nullptr)
+			{
+				std::cout << "Null";
+				return;
+			}
+			c->update();
+		}
 	}
 	void draw()
 	{
@@ -116,17 +126,27 @@ public:
 class Manager
 {
 private:
-	std::vector<std::unique_ptr<Entity>> entities;
+	using EntityHandle = std::unique_ptr<Entity>;
+	using EntityHandleRef = EntityHandle*;
+	std::vector<EntityHandle> entities;
 	std::array<std::vector<Entity*>, maxGroups> groupEntities;
 public:
 
 	void update()
 	{
-		for (auto& e : entities) e->update();
+		for (size_t i = 0; i < entities.size(); i++)
+		{
+			auto& e = entities[i];
+			e->update();
+		}
 	}
 	void draw()
 	{
-		for (auto& e : entities) e->draw();
+		for (size_t i = 0; i < entities.size(); i++)
+		{
+			auto& e = entities[i];
+			e->draw();
+		}
 	}
 
 	void refresh()
@@ -156,6 +176,16 @@ public:
 	std::vector<Entity*>& getGroup(Group group)
 	{
 		return groupEntities[group];
+	}
+
+	bool isGroupEmpty(Group group)
+	{
+		if (group == groupEntities.empty())
+		{
+			return true;
+		}
+		else
+			return false;
 	}
 
 	Entity& addEntity()
