@@ -16,7 +16,7 @@ void AssetManager::CreateProjectile(Vector2 pos, Vector2 velocity, int range, in
 	projectile.addComponent<ProjectileComponent>(range, speed, velocity);
 	projectile.addComponent<ColliderComponent>("projectile");
 	projectile.addGroup(Game::groupProjectiles);
-	std::cout << "Shooting projectile!" << endl;
+	std::cout << "Create Projectile!" << std::endl;
 }
 void AssetManager::CreateMeteor(Vector2 pos, Vector2 velocity, int speed, float scale, std::string id)
 {

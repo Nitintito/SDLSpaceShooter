@@ -12,12 +12,10 @@ SDL_Renderer* Game::gRenderer = nullptr;
 SDL_Event Game::gEvent;
 
 auto& player(manager.addEntity());
-auto& projectile(manager.addEntity());
-auto& meteor(manager.addEntity());
 
-auto& players(manager.getGeroup(Game::groupPlayers));
-auto& meteors(manager.getGeroup(Game::groupMeteors));
-auto& projectiles(manager.getGeroup(Game::groupProjectiles));
+auto& players(manager.getGroup(Game::groupPlayers));
+auto& meteors(manager.getGroup(Game::groupMeteors));
+auto& projectiles(manager.getGroup(Game::groupProjectiles));
 
 std::vector<ColliderComponent*> Game::colliders;
 
@@ -62,14 +60,13 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 	assetManager->AddTexture("Meteor", "Assets/Meteor.png");
 	assetManager->AddTexture("Projectile", "Assets/Projectile.png");
 
+
+
 	player.addComponent<TransformComponent>(400, 530, 2);
 	player.addComponent<SpriteComponent>("Player");
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("Player");
 	player.addGroup(groupPlayers);
-	
-	assetManager->CreateProjectile(Vector2(400, 400), Vector2(1, 0), 800, 0, "Projectile");
-	assetManager->CreateProjectile(Vector2(400, 400), Vector2(1, 0), 800, 1, "Projectile");
 
 	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
 	assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
@@ -91,7 +88,6 @@ void Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 void Game::HandelEvents()
 {
 	SDL_PollEvent(&gEvent);
-
 	switch (gEvent.type)
 	{
 	case SDL_QUIT:
@@ -116,6 +112,7 @@ void Game::Update()
 			//player.getComponent<TransformComponent>().velocity * -1;
 			std::cout << "Meteor hit!" << std::endl;
 			m->deleteGroup(groupMeteors);
+			player.destroy();
 			//m->destroy();
 		}
 	}

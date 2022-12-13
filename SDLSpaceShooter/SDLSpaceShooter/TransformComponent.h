@@ -11,6 +11,7 @@ struct TransformComponent : public Component
 	int height = 32;
 	int width = 32;
 	float scale = 1;
+	double rotation;
 
 	int speed = 3;
 
@@ -56,6 +57,12 @@ struct TransformComponent : public Component
 	{
 		position.x += velocity.x * speed;
 		position.y += velocity.y * speed;
+	}
+
+	double rotate(double amount)
+	{
+		rotation += amount;
+		return amount;
 	}
 
 };

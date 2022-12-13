@@ -9,7 +9,6 @@
 struct KeyboardController : public Component
 {
 	TransformComponent* transform;
-
 	void init() override
 	{
 		transform = &entity->getComponent<TransformComponent>();
@@ -29,6 +28,8 @@ struct KeyboardController : public Component
 				break;
 			case SDLK_a:
 				transform->velocity.x = -1;
+				//transform->rotation += 20;
+				//std::cout << transform->rotation << endl;
 				break;
 			case SDLK_d:
 				transform->velocity.x= 1;
@@ -41,7 +42,6 @@ struct KeyboardController : public Component
 				break;
 			}
 		}
-		//Game::assetManager->CreateProjectile(Vector2(400, 400), Vector2(0, -1), 800, 5, "Projectile");
 
 		if (Game::gEvent.type == SDL_KEYUP)
 		{

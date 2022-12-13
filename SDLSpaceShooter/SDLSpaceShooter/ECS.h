@@ -153,7 +153,7 @@ public:
 		groupEntities[group].emplace_back(entity);
 	}
 
-	std::vector<Entity*>& getGeroup(Group group)
+	std::vector<Entity*>& getGroup(Group group)
 	{
 		return groupEntities[group];
 	}

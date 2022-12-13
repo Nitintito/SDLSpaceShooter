@@ -11,6 +11,8 @@ private:
 	TransformComponent *transform;
 	SDL_Texture *texture;
 	SDL_Rect srcRect, destRect;
+	double angle;
+	double rotationAmount = 0;
 
 public:
 
@@ -47,10 +49,12 @@ public:
 		destRect.y = static_cast<int>(transform->position.y);
 		destRect.w = transform->width * transform->scale;
 		destRect.h = transform->height * transform->scale;
+
+		//angle = transform->rotate(rotationAmount);
 	}
 
 	void draw() override
 	{
-		TextureManager::Draw(texture, srcRect, destRect);
+		TextureManager::DrawTexture(texture, srcRect, destRect, angle);
 	}
 };

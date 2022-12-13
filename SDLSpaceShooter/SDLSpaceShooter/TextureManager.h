@@ -2,9 +2,8 @@
 
 #include "Game.h"
 
-class TextureManager
+struct TextureManager
 {
-public:
 	static SDL_Texture* LoadTexture(const char* fileName);
-	static void Draw(SDL_Texture* texture, SDL_Rect srcPos, SDL_Rect destPos);
+	static void DrawTexture(SDL_Texture* texture, SDL_Rect srcPos, SDL_Rect destPos, double angle = 0.0);
 };

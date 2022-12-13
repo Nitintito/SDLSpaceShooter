@@ -27,7 +27,7 @@ public:
 		if (distance > range)
 		{
 			std::cout << "out of range" << std::endl;
-			entity->destroy();
+			entity->deleteGroup(Game::groupProjectiles);
 		}
 		//TODO Else if out of bounds
 	}
