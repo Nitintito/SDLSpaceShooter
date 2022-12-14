@@ -13,7 +13,7 @@ int main(int argc, char* args[])
 
 	game = new Game();
 
-	game->init("GameName", game->windowL, game->windowH, false);
+	game->init("Meteor Defender", game->windowL, game->windowH, false);
 
 	while (game->Running())
 	{

@@ -83,18 +83,11 @@ void Game::Update()
 	manager.refresh();
 	manager.update();
 
-
-	if (remaingingMeteors < 0)
-	{
-		//cout << remaingingMeteors << endl;
-	}
-
 	//cout << manager.isGroupEmpty(groupMeteors);
 	if (manager.isGroupEmpty(groupMeteors))
 	{
 		spawnNewWave(waveSize);
 		cout << "New Wave" << endl;
-		//cout << manager.isGroupEmpty(groupMeteors) << endl;
 	}
 
 	for (auto& m : meteors)
@@ -103,14 +96,12 @@ void Game::Update()
 		{
 			//TODO player take damage
  			m->destroy();
-			remaingingMeteors--;
 			std::cout << "Player Damaged" << endl;
 
 		}
 		else if (Collision::AABB(Earth.getComponent<ColliderComponent>().collider, m->getComponent<ColliderComponent>().collider))
 		{
 			m->destroy();
-			remaingingMeteors--;
 			std::cout << "earth Damaged" << endl;
 			//TODO damage earth
 		}
@@ -121,7 +112,6 @@ void Game::Update()
 			{
 				m->destroy();
 				p->destroy();
-				remaingingMeteors--;
 			}
 		}
 	}
@@ -150,7 +140,6 @@ void Game::Render()
 
 void Game::spawnNewWave(int size)
 {
-	remaingingMeteors = waveSize;
 	for (int i = 0; i < size; i++)
 	{
 		assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");

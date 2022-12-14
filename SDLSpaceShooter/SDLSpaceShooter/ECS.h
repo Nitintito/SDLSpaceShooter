@@ -177,8 +177,7 @@ public:
 
 	bool isGroupEmpty(Group group)
 	{
-		std::cout << groupEntities.size();
-		if (group == groupEntities.empty())
+		if (groupEntities[group].empty())
 		{
 			return true;
 		}

@@ -24,7 +24,6 @@ public:
 
 	void spawnNewWave(int size);
 	int waveSize = 3;
-	int remaingingMeteors;
 	const int windowL = 800, windowH = 600;
 
 	

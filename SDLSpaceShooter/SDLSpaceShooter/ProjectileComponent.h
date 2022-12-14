@@ -22,8 +22,8 @@ public:
 
 	void update() override
 	{
-		distance += travleDistance;
 
+		//distance += travleDistance;
 		/*if (distance > range)
 		{
 			std::cout << "out of range" << std::endl;
@@ -31,11 +31,8 @@ public:
 		}*/
 		if (transform->position.y < 0)
 		{
-			std::cout << "Out of bounds!" << std::endl;
 			entity->destroy();
-			//entity->destroy();
 		}
-		//TODO Else if out of bounds
 	}
 
 private:
