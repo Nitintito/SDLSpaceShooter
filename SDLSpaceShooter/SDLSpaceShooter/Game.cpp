@@ -13,10 +13,13 @@ SDL_Event Game::gEvent;
 
 auto& player(manager.addEntity());
 auto& Earth(manager.addEntity());
+auto& Background(manager.addEntity());
 
 auto& players(manager.getGroup(Game::groupPlayers));
 auto& meteors(manager.getGroup(Game::groupMeteors));
 auto& projectiles(manager.getGroup(Game::groupProjectiles));
+auto& backGrounds(manager.getGroup(Game::groupbackGrounds));
+
 
 
 std::vector<ColliderComponent*> Game::colliders;
@@ -41,26 +44,14 @@ void Game::init(const char* title,int width, int height, bool fullScreen)
 		gRenderer = SDL_CreateRenderer(gWindow, -1, 0);
 		if (gRenderer)
 		{
-			SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
+			SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
 		}
 		isRunning = true;
 	}
 
-	assetManager->AddTexture("Player", "Assets/SpaceShip.png");
-	assetManager->AddTexture("Meteor", "Assets/Meteor.png");
-	assetManager->AddTexture("Projectile", "Assets/Projectile.png");
-	assetManager->AddTexture("Earth", "Assets/Earth.png");
-
-	Earth.addComponent<TransformComponent>(0, 568, 16, 400, 2);
-	Earth.addComponent<SpriteComponent>("Earth");
-	Earth.addComponent<ColliderComponent>("Earth");
-	Earth.addGroup(groupPlayers);
-
-	player.addComponent<TransformComponent>(400, 530, 2);
-	player.addComponent<SpriteComponent>("Player");
-	player.addComponent<KeyboardController>();
-	player.addComponent<ColliderComponent>("Player");
-	player.addGroup(groupPlayers);
+	AddTextures();
+	CreateBackground();
+	CreatePlayer();
 
 	spawnNewWave(waveSize);
 }
@@ -83,27 +74,33 @@ void Game::Update()
 	manager.refresh();
 	manager.update();
 
-	//cout << manager.isGroupEmpty(groupMeteors);
 	if (manager.isGroupEmpty(groupMeteors))
-	{
 		spawnNewWave(waveSize);
-		cout << "New Wave" << endl;
-	}
 
 	for (auto& m : meteors)
 	{
 		if (Collision::AABB(player.getComponent<ColliderComponent>().collider, m->getComponent<ColliderComponent>().collider))
 		{
-			//TODO player take damage
  			m->destroy();
-			std::cout << "Player Damaged" << endl;
 
+			cout << "Player HP: " << player.getComponent<HealthComponent>().getHealth() << endl;
+			player.getComponent<HealthComponent>().takeDamage(1);
+
+			if (player.getComponent<HealthComponent>().getHealth() <= 0)
+			{
+				player.deleteGroup(groupPlayers);
+			}
 		}
 		else if (Collision::AABB(Earth.getComponent<ColliderComponent>().collider, m->getComponent<ColliderComponent>().collider))
 		{
 			m->destroy();
-			std::cout << "earth Damaged" << endl;
-			//TODO damage earth
+			Earth.getComponent<HealthComponent>().takeDamage(1);
+
+			cout << "Earth HP: " << Earth.getComponent<HealthComponent>().getHealth() << endl;
+			if (Earth.getComponent<HealthComponent>().getHealth() <= 0)
+			{
+				Earth.getComponent<SpriteComponent>().setTexture("EarthDestroyed");
+			}
 		}
 
 		for (auto& p : projectiles)
@@ -122,6 +119,10 @@ void Game::Render()
 {
 	SDL_RenderClear(gRenderer);
 
+	for (auto& b : backGrounds)
+	{
+		b->draw();
+	}
 	for (auto& p : players)
 	{
 		p->draw();
@@ -153,6 +154,39 @@ void Game::Clean()
 	SDL_DestroyWindow(gWindow);
 	SDL_DestroyRenderer(gRenderer);
 	SDL_Quit();
+}
+
+void Game::AddTextures()
+{
+	assetManager->AddTexture("Player", "Assets/SpaceShip.png");
+	assetManager->AddTexture("Meteor", "Assets/Meteor.png");
+	assetManager->AddTexture("Projectile", "Assets/Projectile.png");
+	assetManager->AddTexture("Earth", "Assets/Earth.png");
+	assetManager->AddTexture("Background", "Assets/Background.png");
+	assetManager->AddTexture("EarthDestroyed", "Assets/EarthDestroyed.png");
+}
+
+void Game::CreateBackground()
+{
+	Background.addComponent<TransformComponent>(-100, -100, 600, 800, 2);
+	Background.addComponent<SpriteComponent>("Background");
+	Background.addGroup(groupbackGrounds);
+
+	Earth.addComponent<TransformComponent>(0, 568, 16, 400, 2);
+	Earth.addComponent<SpriteComponent>("Earth");
+	Earth.addComponent<ColliderComponent>("Earth");
+	Earth.addComponent<HealthComponent>().setHealth(5);
+	Earth.addGroup(groupbackGrounds);
+}
+
+void Game::CreatePlayer()
+{
+	player.addComponent<TransformComponent>(400, 530, 2);
+	player.addComponent<SpriteComponent>("Player");
+	player.addComponent<KeyboardController>();
+	player.addComponent<ColliderComponent>("Player");
+	player.addComponent<HealthComponent>(10);
+	player.addGroup(groupPlayers);
 }
 
 

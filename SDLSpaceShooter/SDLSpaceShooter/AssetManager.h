@@ -17,6 +17,8 @@ public:
 	void CreateProjectile(Vector2 pos, Vector2 velocity, int range, int speed, std::string id);
 	void CreateMeteor(Vector2 pos, Vector2 velocity, int speed, float scale, std::string id);
 	void CreateRandomMeteor(Vector2 pos, std::string id);
+	void CreateEarth();
+	void CreateBackground();
 
 	//textures
 	void AddTexture(std::string id, const char* path);

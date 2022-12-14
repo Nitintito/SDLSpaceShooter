@@ -22,6 +22,10 @@ public:
 	void Render();
 	void Clean();
 
+	void AddTextures();
+	void CreateBackground();
+	void CreatePlayer();
+
 	void spawnNewWave(int size);
 	int waveSize = 3;
 	const int windowL = 800, windowH = 600;
@@ -39,7 +43,7 @@ public:
 		groupPlayers,
 		groupMeteors,
 		groupProjectiles,
-		groupColliders
+		groupbackGrounds
 	};
 
 private:

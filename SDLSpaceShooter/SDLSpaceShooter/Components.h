@@ -7,3 +7,4 @@
 #include "ColliderComponent.h"
 #include "ProjectileComponent.h"
 #include "MeteorComponent.h"
+#include "HealthComponent.h"

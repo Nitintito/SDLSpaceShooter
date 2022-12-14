@@ -37,9 +37,7 @@ void AssetManager::CreateRandomMeteor(Vector2 pos, std::string id)
 	meteor.addComponent<ColliderComponent>(id);
 	meteor.addGroup(Game::groupMeteors);
 
-	//std::cout << "Spwaning Meteor" << endl;
 }
-
 
 void AssetManager::AddTexture(std::string id, const char* path)
 {
