@@ -112,7 +112,10 @@ void Game::Update()
 			{
 				m->destroy();
 				p->destroy();
+
+				if(!gameOver)
 				score += meteorScoreValue;
+
 				cout << "Score: " <<  score << endl;
 			}
 		}
@@ -186,7 +189,7 @@ void Game::CreateBackground()
 
 void Game::CreatePlayer()
 {
-	player.addComponent<TransformComponent>(400, 530, 2);
+	player.addComponent<TransformComponent>(400, 530, 2).speed = playerSpeed;
 	player.addComponent<SpriteComponent>("Player");
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("Player");

@@ -29,6 +29,7 @@ public:
 
 	const int windowL = 800, windowH = 600;
 
+	int playerSpeed = 5;
 	int playerHp = 5;
 	int earthHp = 10;
 	int meteorDamage = 1;

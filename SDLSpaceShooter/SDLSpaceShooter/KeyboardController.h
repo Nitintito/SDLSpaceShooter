@@ -38,7 +38,7 @@ struct KeyboardController : public Component
 			case SDLK_SPACE:
 				if (!reload)
 				{
-					Game::assetManager->CreateProjectile(Vector2(transform->getPosition().x + 30, transform->getPosition().y), Vector2(0, -1), 800, 5, "Projectile");
+					Game::assetManager->CreateProjectile(Vector2(transform->getPosition().x + 30, transform->getPosition().y), Vector2(0, -1), 800, 9, "Projectile");
 					reload = true;
 				}
 				break;

@@ -46,7 +46,7 @@ public:
 
 	void update() override
 	{
-		if (transform->position.y > 800)
+		if (transform->position.y > 700 || transform->position.x > 950 || transform->position.x < -150)
 		{
 			//std::cout << "Out of bounds!" << std::endl;
 			entity->destroy();
