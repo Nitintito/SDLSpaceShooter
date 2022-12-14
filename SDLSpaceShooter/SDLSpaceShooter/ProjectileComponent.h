@@ -24,10 +24,16 @@ public:
 	{
 		distance += travleDistance;
 
-		if (distance > range)
+		/*if (distance > range)
 		{
 			std::cout << "out of range" << std::endl;
 			entity->deleteGroup(Game::groupProjectiles);
+		}*/
+		if (transform->position.y < 0)
+		{
+			std::cout << "Out of bounds!" << std::endl;
+			entity->destroy();
+			//entity->destroy();
 		}
 		//TODO Else if out of bounds
 	}

@@ -13,7 +13,7 @@ int main(int argc, char* args[])
 
 	game = new Game();
 
-	game->init("GameName", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, game->windowH, game->windowL, false);
+	game->init("GameName", game->windowL, game->windowH, false);
 
 	while (game->Running())
 	{

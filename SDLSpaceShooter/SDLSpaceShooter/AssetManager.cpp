@@ -1,7 +1,7 @@
 #include "AssetManager.h"
 #include "Components.h"
 
-AssetManager::AssetManager(Manager* manager) : manager(manager)
+AssetManager::AssetManager(Manager* man) : manager(man)
 {
 }
 
@@ -13,8 +13,8 @@ void AssetManager::CreateProjectile(Vector2 pos, Vector2 velocity, int range, in
 	auto& projectile(manager->addEntity());
 	projectile.addComponent<TransformComponent>(pos.x, pos.y, 8, 8, 0.7);
 	projectile.addComponent<SpriteComponent>(id);
-	projectile.addComponent<ColliderComponent>("projectile");
 	projectile.addComponent<ProjectileComponent>(range, speed, velocity);
+	projectile.addComponent<ColliderComponent>(id);
 	projectile.addGroup(Game::groupProjectiles);
 	//std::cout << "Create Projectile!" << std::endl;
 }
@@ -22,9 +22,9 @@ void AssetManager::CreateMeteor(Vector2 pos, Vector2 velocity, int speed, float 
 {
 	auto& meteor(manager->addEntity());
 	meteor.addComponent<TransformComponent>(pos.x, pos.y);
-	meteor.addComponent<SpriteComponent>("Meteor");
+	meteor.addComponent<SpriteComponent>(id);
 	meteor.addComponent<MeteorComponent>(scale, speed, velocity);
-	meteor.addComponent<ColliderComponent>("Meteor");
+	meteor.addComponent<ColliderComponent>(id);
 	meteor.addGroup(Game::groupMeteors);
 }
 
@@ -32,9 +32,9 @@ void AssetManager::CreateRandomMeteor(Vector2 pos, std::string id)
 {
 	auto& meteor(manager->addEntity());
 	meteor.addComponent<TransformComponent>(pos.x, pos.y);
-	meteor.addComponent<SpriteComponent>("Meteor");
-	meteor.addComponent<ColliderComponent>("Meteor");
+	meteor.addComponent<SpriteComponent>(id);
 	meteor.addComponent<MeteorComponent>(true);
+	meteor.addComponent<ColliderComponent>(id);
 	meteor.addGroup(Game::groupMeteors);
 
 	//std::cout << "Spwaning Meteor" << endl;
@@ -43,12 +43,12 @@ void AssetManager::CreateRandomMeteor(Vector2 pos, std::string id)
 
 void AssetManager::AddTexture(std::string id, const char* path)
 {
-	texture.emplace(id, TextureManager::LoadTexture(path));
+	textures.emplace(id, TextureManager::LoadTexture(path));
 }
 
 SDL_Texture* AssetManager::GetTexture(std::string id)
 {
-	return texture[id];
+	return textures[id];
 }
 
 

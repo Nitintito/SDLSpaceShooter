@@ -44,6 +44,15 @@ public:
 
 	}
 
+	void update() override
+	{
+		if (transform->position.y > 800)
+		{
+			//std::cout << "Out of bounds!" << std::endl;
+			entity->destroy();
+		}
+	}
+
 	float RandomFloat(float Min, float Max)
 	{
 		return ((float(rand()) / float(RAND_MAX)) * (Max - Min)) + Min;

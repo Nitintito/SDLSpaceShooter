@@ -10,7 +10,7 @@
 class AssetManager
 {
 public:
-	AssetManager(Manager* manager);
+	AssetManager(Manager* man);
 	~AssetManager();
 
 	//Gameobjects
@@ -24,9 +24,7 @@ public:
 
 private:
 	Manager* manager;
-	std::map<std::string, SDL_Texture*> texture;
-
-
+	std::map<std::string, SDL_Texture*> textures;
 };
 
 

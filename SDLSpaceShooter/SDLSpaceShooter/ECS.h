@@ -27,8 +27,8 @@ template <typename T> inline ComponentID getComponentTypeID() noexcept
 	return typeID;
 }
 
-constexpr std::size_t maxComponents = 64;
-constexpr std::size_t maxGroups = 64;
+constexpr std::size_t maxComponents = 16;
+constexpr std::size_t maxGroups = 16;
 
 using ComponentBitSet = std::bitset<maxComponents>;
 using GroupBitset = std::bitset<maxGroups>;
@@ -67,17 +67,17 @@ public:
 		for (size_t i = 0; i < components.size(); i++)
 		{
 			auto& c = components[i];
-			if (c == nullptr)
-			{
-				std::cout << "Null";
-				return;
-			}
 			c->update();
 		}
 	}
 	void draw()
 	{
-		for (auto & c : components) c->draw();
+		auto& self = *this;
+		for (size_t i = 0; i < components.size(); i++)
+		{
+			auto& c = components[i];
+			c->draw();
+		}
 	}
 
 	bool isActive() const { return active; }
@@ -126,12 +126,9 @@ public:
 class Manager
 {
 private:
-	using EntityHandle = std::unique_ptr<Entity>;
-	using EntityHandleRef = EntityHandle*;
-	std::vector<EntityHandle> entities;
+	std::vector<std::unique_ptr<Entity>> entities;
 	std::array<std::vector<Entity*>, maxGroups> groupEntities;
 public:
-
 	void update()
 	{
 		for (size_t i = 0; i < entities.size(); i++)
@@ -161,7 +158,7 @@ public:
 				std::end(v));
 		}
 
-		entities.erase(std::remove_if(std::begin(entities), std::end(entities), [](const std::unique_ptr<Entity> &mEntity)
+		entities.erase(std::remove_if(std::begin(entities), std::end(entities), [](const std::unique_ptr<Entity>& mEntity)
 		{
 			return !mEntity->isActive();
 		}),
@@ -180,6 +177,7 @@ public:
 
 	bool isGroupEmpty(Group group)
 	{
+		std::cout << groupEntities.size();
 		if (group == groupEntities.empty())
 		{
 			return true;

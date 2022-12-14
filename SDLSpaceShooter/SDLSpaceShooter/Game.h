@@ -15,7 +15,7 @@ public:
 	Game();
 	~Game();
 
-	void init(const char* title, int xPos, int yPos, int width, int height, bool fullScreen);
+	void init(const char* title, int width, int height, bool fullScreen);
 
 	void HandelEvents();
 	void Update();
@@ -25,7 +25,7 @@ public:
 	void spawnNewWave(int size);
 	int waveSize = 3;
 	int remaingingMeteors;
-	const int windowH = 800, windowL = 600;
+	const int windowL = 800, windowH = 600;
 
 	
 	bool Running() { return isRunning; };

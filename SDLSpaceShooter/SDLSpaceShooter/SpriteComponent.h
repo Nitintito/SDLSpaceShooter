@@ -24,7 +24,6 @@ public:
 
 	~SpriteComponent()
 	{
-		SDL_DestroyTexture(texture);
 	}
 
 	void setTexture(std::string id)

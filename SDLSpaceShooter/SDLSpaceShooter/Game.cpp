@@ -12,6 +12,7 @@ SDL_Renderer* Game::gRenderer = nullptr;
 SDL_Event Game::gEvent;
 
 auto& player(manager.addEntity());
+auto& Earth(manager.addEntity());
 
 auto& players(manager.getGroup(Game::groupPlayers));
 auto& meteors(manager.getGroup(Game::groupMeteors));
@@ -26,42 +27,34 @@ Game::Game()
 Game::~Game()
 {}
 
-void Game::init(const char* title, int xPos, int yPos, int width, int height, bool fullScreen)
+void Game::init(const char* title,int width, int height, bool fullScreen)
 {
+	srand((unsigned)time(NULL));
+
 	int flags = 0;
 	if (fullScreen)
 		flags = SDL_WINDOW_FULLSCREEN;
 
-	srand((unsigned)time(NULL));
-
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
-		cout << "SDL Initialised!" << endl;
-		gWindow = SDL_CreateWindow(title, xPos, yPos, width, height, flags);
-		if (gWindow != NULL)
-		{
-			cout << "Window created!" << endl;
-		}
-
+		gWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
 		gRenderer = SDL_CreateRenderer(gWindow, -1, 0);
-		if (gRenderer != NULL)
+		if (gRenderer)
 		{
-			cout << "Renderer Created" << endl;
-			SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
+			SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0);
 		}
 		isRunning = true;
-	}
-	else
-	{
-		isRunning = false;
-		cout << "ERROR SDL DID NOT RUN";
 	}
 
 	assetManager->AddTexture("Player", "Assets/SpaceShip.png");
 	assetManager->AddTexture("Meteor", "Assets/Meteor.png");
 	assetManager->AddTexture("Projectile", "Assets/Projectile.png");
+	assetManager->AddTexture("Earth", "Assets/Earth.png");
 
-
+	Earth.addComponent<TransformComponent>(0, 568, 16, 400, 2);
+	Earth.addComponent<SpriteComponent>("Earth");
+	Earth.addComponent<ColliderComponent>("Earth");
+	Earth.addGroup(groupPlayers);
 
 	player.addComponent<TransformComponent>(400, 530, 2);
 	player.addComponent<SpriteComponent>("Player");
@@ -80,7 +73,6 @@ void Game::HandelEvents()
 	case SDL_QUIT:
 		isRunning = false;
 		break;
-
 	default:
 		break;
 	}
@@ -90,33 +82,45 @@ void Game::Update()
 {
 	manager.refresh();
 	manager.update();
-	cout << remaingingMeteors << endl;
-	//cout << manager.isGroupEmpty(groupMeteors);
-	if (remaingingMeteors <= 0)
+
+
+	if (remaingingMeteors < 0)
 	{
-		//TODO Spwan more Meteors
-		spawnNewWave(waveSize);
-		cout << "New Wave";
+		//cout << remaingingMeteors << endl;
 	}
 
-	//cout << manager.isGroupEmpty(groupMeteors) << endl;
+	//cout << manager.isGroupEmpty(groupMeteors);
+	if (manager.isGroupEmpty(groupMeteors))
+	{
+		spawnNewWave(waveSize);
+		cout << "New Wave" << endl;
+		//cout << manager.isGroupEmpty(groupMeteors) << endl;
+	}
 
 	for (auto& m : meteors)
 	{
 		if (Collision::AABB(player.getComponent<ColliderComponent>().collider, m->getComponent<ColliderComponent>().collider))
 		{
-			std::cout << "Meteor hit!" << std::endl;
-			//TODO take damage
-			m->deleteGroup(groupMeteors);
+			//TODO player take damage
+ 			m->destroy();
 			remaingingMeteors--;
+			std::cout << "Player Damaged" << endl;
+
 		}
+		else if (Collision::AABB(Earth.getComponent<ColliderComponent>().collider, m->getComponent<ColliderComponent>().collider))
+		{
+			m->destroy();
+			remaingingMeteors--;
+			std::cout << "earth Damaged" << endl;
+			//TODO damage earth
+		}
+
 		for (auto& p : projectiles)
 		{
 			if (Collision::AABB(m->getComponent<ColliderComponent>().collider, p->getComponent<ColliderComponent>().collider))
 			{
-				std::cout << "Projectile hit Meteor!" << std::endl;
-				m->deleteGroup(groupMeteors);
-				p->deleteGroup(groupProjectiles);
+				m->destroy();
+				p->destroy();
 				remaingingMeteors--;
 			}
 		}
@@ -160,7 +164,6 @@ void Game::Clean()
 	SDL_DestroyWindow(gWindow);
 	SDL_DestroyRenderer(gRenderer);
 	SDL_Quit();
-	cout << "Game Cleaned" << endl;
 }
 
 

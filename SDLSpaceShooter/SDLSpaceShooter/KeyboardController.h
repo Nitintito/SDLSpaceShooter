@@ -8,6 +8,7 @@
 
 struct KeyboardController : public Component
 {
+	bool reload = false;
 	TransformComponent* transform;
 	void init() override
 	{
@@ -35,8 +36,11 @@ struct KeyboardController : public Component
 				transform->velocity.x= 1;
 				break;
 			case SDLK_SPACE:
-				std::cout << "request shoot" << endl;
-				Game::assetManager->CreateProjectile(Vector2(transform->getPosition().x + 30, transform->getPosition().y), Vector2(0, -1), 800, 5, "Projectile");
+				if (!reload)
+				{
+					Game::assetManager->CreateProjectile(Vector2(transform->getPosition().x + 30, transform->getPosition().y), Vector2(0, -1), 800, 5, "Projectile");
+					reload = true;
+				}
 				break;
 			default:
 				break;
@@ -59,6 +63,8 @@ struct KeyboardController : public Component
 			case SDLK_d:
 				transform->velocity.x = 0;
 				break;
+			case SDLK_SPACE:
+				reload = false;
 			default:
 				break;
 			}
