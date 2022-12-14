@@ -25,10 +25,21 @@ public:
 	void AddTextures();
 	void CreateBackground();
 	void CreatePlayer();
-
 	void spawnNewWave(int size);
-	int waveSize = 3;
+
 	const int windowL = 800, windowH = 600;
+
+	int playerHp = 5;
+	int earthHp = 10;
+	int meteorDamage = 1;
+
+	int waveSize = 1;
+	int score = 0;
+	int meteorScoreValue = 100;
+
+	bool gameOver = false;
+
+
 
 	
 	bool Running() { return isRunning; };

@@ -20,8 +20,6 @@ auto& meteors(manager.getGroup(Game::groupMeteors));
 auto& projectiles(manager.getGroup(Game::groupProjectiles));
 auto& backGrounds(manager.getGroup(Game::groupbackGrounds));
 
-
-
 std::vector<ColliderComponent*> Game::colliders;
 
 Game::Game()
@@ -71,11 +69,15 @@ void Game::HandelEvents()
 
 void Game::Update()
 {
+	
 	manager.refresh();
 	manager.update();
 
 	if (manager.isGroupEmpty(groupMeteors))
+	{
 		spawnNewWave(waveSize);
+	}
+
 
 	for (auto& m : meteors)
 	{
@@ -84,22 +86,23 @@ void Game::Update()
  			m->destroy();
 
 			cout << "Player HP: " << player.getComponent<HealthComponent>().getHealth() << endl;
-			player.getComponent<HealthComponent>().takeDamage(1);
+			player.getComponent<HealthComponent>().takeDamage(meteorDamage);
 
 			if (player.getComponent<HealthComponent>().getHealth() <= 0)
 			{
-				player.deleteGroup(groupPlayers);
+				gameOver = true;
 			}
 		}
 		else if (Collision::AABB(Earth.getComponent<ColliderComponent>().collider, m->getComponent<ColliderComponent>().collider))
 		{
 			m->destroy();
-			Earth.getComponent<HealthComponent>().takeDamage(1);
+			Earth.getComponent<HealthComponent>().takeDamage(meteorDamage);
 
 			cout << "Earth HP: " << Earth.getComponent<HealthComponent>().getHealth() << endl;
 			if (Earth.getComponent<HealthComponent>().getHealth() <= 0)
 			{
 				Earth.getComponent<SpriteComponent>().setTexture("EarthDestroyed");
+				gameOver = true;
 			}
 		}
 
@@ -109,10 +112,12 @@ void Game::Update()
 			{
 				m->destroy();
 				p->destroy();
+				score += meteorScoreValue;
+				cout << "Score: " <<  score << endl;
 			}
 		}
 	}
-
+	
 }
 
 void Game::Render()
@@ -143,7 +148,7 @@ void Game::spawnNewWave(int size)
 {
 	for (int i = 0; i < size; i++)
 	{
-		assetManager->CreateRandomMeteor(Vector2(0, 0), "Meteor");
+		assetManager->CreateRandomMeteor(Vector2().Zero(), "Meteor");
 	}
 	waveSize++;
 }
@@ -175,7 +180,7 @@ void Game::CreateBackground()
 	Earth.addComponent<TransformComponent>(0, 568, 16, 400, 2);
 	Earth.addComponent<SpriteComponent>("Earth");
 	Earth.addComponent<ColliderComponent>("Earth");
-	Earth.addComponent<HealthComponent>().setHealth(5);
+	Earth.addComponent<HealthComponent>(earthHp);
 	Earth.addGroup(groupbackGrounds);
 }
 
@@ -185,7 +190,7 @@ void Game::CreatePlayer()
 	player.addComponent<SpriteComponent>("Player");
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("Player");
-	player.addComponent<HealthComponent>(10);
+	player.addComponent<HealthComponent>(playerHp);
 	player.addGroup(groupPlayers);
 }
 
