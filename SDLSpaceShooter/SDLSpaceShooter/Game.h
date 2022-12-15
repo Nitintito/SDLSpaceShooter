@@ -38,6 +38,7 @@ public:
 	int score = 0;
 	int meteorScoreValue = 100;
 
+	static bool isRunning;
 	bool gameOver = false;
 
 
@@ -60,8 +61,6 @@ public:
 
 private:
 
-	bool isRunning = false;
 	SDL_Window *gWindow;
-
 	int frameCounter = 0;
 };

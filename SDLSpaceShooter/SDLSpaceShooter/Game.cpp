@@ -8,6 +8,8 @@
 Manager manager;
 AssetManager* Game::assetManager = new AssetManager(&manager);
 
+bool Game::isRunning = false;
+
 SDL_Renderer* Game::gRenderer = nullptr;
 SDL_Event Game::gEvent;
 

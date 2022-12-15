@@ -9,6 +9,7 @@
 struct KeyboardController : public Component
 {
 	bool reload = false;
+
 	TransformComponent* transform;
 	void init() override
 	{
@@ -42,6 +43,8 @@ struct KeyboardController : public Component
 					reload = true;
 				}
 				break;
+			case SDLK_ESCAPE:
+				Game::isRunning = false;
 			default:
 				break;
 			}
