@@ -34,5 +34,11 @@ public:
 		collider.w = transform->width * transform->scale;
 		collider.h = transform->height * transform->scale;
 	}
+
+	void draw() override
+	{
+		SDL_SetRenderDrawColor(Game::gRenderer,255, 0, 255, 0);
+		SDL_RenderDrawRect(Game::gRenderer, &collider);
+	}
 };
 
