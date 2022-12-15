@@ -172,7 +172,6 @@
     <ClInclude Include="KeyboardController.h" />
     <ClInclude Include="MeteorComponent.h" />
     <ClInclude Include="ProjectileComponent.h" />
-    <ClInclude Include="QuadTree.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="TextureManager.h" />
