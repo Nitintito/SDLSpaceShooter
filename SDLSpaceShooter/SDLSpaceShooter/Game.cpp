@@ -71,7 +71,7 @@ void Game::HandelEvents()
 
 void Game::Update()
 {
-	
+
 	manager.refresh();
 	manager.update();
 
@@ -80,18 +80,22 @@ void Game::Update()
 		spawnNewWave(waveSize);
 	}
 
-
 	for (auto& m : meteors)
 	{
 		if (Collision::AABB(player.getComponent<ColliderComponent>().collider, m->getComponent<ColliderComponent>().collider))
 		{
  			m->destroy();
 
-			cout << "Player HP: " << player.getComponent<HealthComponent>().getHealth() << endl;
+			if (!gameOver)
+			cout << "Ship HP: " << player.getComponent<HealthComponent>().getHealth() << endl;
+
 			player.getComponent<HealthComponent>().takeDamage(meteorDamage);
 
 			if (player.getComponent<HealthComponent>().getHealth() <= 0)
 			{
+				player.getComponent<TransformComponent>().scale = 0;
+				if (!gameOver)
+				cout << "GAME OVER: Ship was destroyed" << endl << "Score = " << score << endl;
 				gameOver = true;
 			}
 		}
@@ -100,10 +104,14 @@ void Game::Update()
 			m->destroy();
 			Earth.getComponent<HealthComponent>().takeDamage(meteorDamage);
 
+			if (!gameOver)
 			cout << "Earth HP: " << Earth.getComponent<HealthComponent>().getHealth() << endl;
+
 			if (Earth.getComponent<HealthComponent>().getHealth() <= 0)
 			{
 				Earth.getComponent<SpriteComponent>().setTexture("EarthDestroyed");
+				if (!gameOver)
+				cout << "GAME OVER: Earth was destroyed" << endl << "Score = " << score << endl;
 				gameOver = true;
 			}
 		}
@@ -122,7 +130,6 @@ void Game::Update()
 			}
 		}
 	}
-	
 }
 
 void Game::Render()
